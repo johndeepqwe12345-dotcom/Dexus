@@ -126,9 +126,10 @@ def chat():
         resp = client.chat.completions.create(
             model='llama-3.3-70b-versatile',
             messages=[{'role': 'system', 'content': SYSTEM}] + history,
-            max_tokens=2048,
+            max_tokens=1024,
             temperature=0.7,
-        )
+            timeout=25,
+)
         return jsonify({'reply': resp.choices[0].message.content})
     except Exception as e:
         return jsonify({'error': str(e)})
