@@ -4,9 +4,8 @@ from groq import Groq
 from pathlib import Path
 import os
 
-load_dotenv(Path.home() / ".nexus-ai.env")
-API_KEY = os.environ.get("GROQ_API_KEY")
-client = Groq(api_key=API_KEY)
+API_KEY = os.environ.get("GROQ_API_KEY", "")
+client = Groq(api_key=API_KEY) if API_KEY else Noneclient = Groq(api_key=API_KEY)
 app = Flask(__name__)
 MODEL = "llama-3.3-70b-versatile"
 
