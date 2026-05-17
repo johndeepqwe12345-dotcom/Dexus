@@ -1,0 +1,3 @@
+cd ~/nexus-ai
+source venv/bin/activate
+python3 nexus.py
