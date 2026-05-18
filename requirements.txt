@@ -1,4 +1,0 @@
-groq
-flask
-python-dotenv
-gunicorn
