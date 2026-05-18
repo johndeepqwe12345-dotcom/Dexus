@@ -1,42 +1,327 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NEXUS AI</title>
-<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#050a0e;color:#c8dde8;font-family:Arial,sans-serif;display:flex;flex-direction:column;height:100dvh}.hdr{background:#0a1520;padding:12px 16px;border-bottom:1px solid rgba(0,212,255,.2)}.hdr h1{color:#00d4ff;font-size:18px;letter-spacing:2px}.hdr p{color:#3a5a6a;font-size:10px;margin-top:2px}#msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}.user{align-self:flex-end;background:rgba(255,107,53,.1);border:1px solid rgba(255,107,53,.25);padding:10px 14px;border-radius:16px 4px 16px 16px;max-width:82%;font-size:14px;line-height:1.6;word-break:break-word}.ai{align-self:flex-start;background:rgba(0,212,255,.07);border:1px solid rgba(0,212,255,.2);padding:10px 14px;border-radius:4px 16px 16px 16px;max-width:85%;font-size:14px;line-height:1.75;white-space:pre-wrap;word-break:break-word}.inp{background:#0a1520;border-top:1px solid rgba(0,212,255,.2);padding:10px 12px;display:flex;gap:8px;padding-bottom:max(10px,env(safe-area-inset-bottom))}#box{flex:1;background:#050a0e;border:1px solid rgba(0,212,255,.3);border-radius:20px;padding:10px 16px;color:#c8dde8;font-size:15px;outline:none}#box:focus{border-color:#00d4ff}#btn{background:rgba(0,212,255,.2);border:1px solid #00d4ff;border-radius:50%;width:42px;height:42px;color:#00d4ff;font-size:18px;cursor:pointer}#btn:disabled{opacity:.4}.setup{position:fixed;inset:0;background:rgba(5,10,14,.97);display:flex;align-items:center;justify-content:center;z-index:100}.card{background:#0a1520;border:1px solid rgba(0,212,255,.3);border-radius:16px;padding:28px;width:90%;max-width:380px;text-align:center}.card h2{color:#00d4ff;font-size:20px;letter-spacing:3px;margin-bottom:8px}.card p{color:#5a7a8a;font-size:13px;line-height:1.6;margin-bottom:20px}.card input{width:100%;background:#050a0e;border:1px solid rgba(0,212,255,.3);border-radius:8px;padding:12px;color:#c8dde8;font-size:13px;font-family:monospace;outline:none;margin-bottom:12px}.card button{width:100%;padding:12px;background:rgba(0,212,255,.2);border:1px solid #00d4ff;border-radius:8px;color:#00d4ff;font-size:14px;cursor:pointer}.card a{color:#00ff9d;font-size:12px;display:block;margin-top:12px;text-decoration:none}</style>
+<!DOCTYPE html>
+<html><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NEXUS AI</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#050a0e;color:#c8dde8;font-family:Arial,sans-serif;display:flex;flex-direction:column;height:100dvh;overflow:hidden}
+.hdr{background:#0a1520;padding:10px 14px;border-bottom:1px solid rgba(0,212,255,.2);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.hdr-left h1{color:#00d4ff;font-size:16px;letter-spacing:2px}
+.hdr-left p{color:#3a5a6a;font-size:9px;margin-top:1px}
+.hdr-right{display:flex;gap:6px;align-items:center}
+.dot{width:7px;height:7px;border-radius:50%;background:#00ff9d;box-shadow:0 0 6px #00ff9d;animation:bl 1.5s infinite}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:.3}}
+.modes{background:#0a1520;border-bottom:1px solid rgba(0,212,255,.15);padding:6px 10px;display:flex;gap:6px;overflow-x:auto;flex-shrink:0;scrollbar-width:none}
+.modes::-webkit-scrollbar{display:none}
+.mode-btn{padding:5px 12px;border-radius:20px;border:1px solid rgba(0,212,255,.2);background:transparent;color:#5a7a8a;font-size:11px;cursor:pointer;white-space:nowrap;transition:all .2s}
+.mode-btn.active{background:rgba(0,212,255,.15);border-color:#00d4ff;color:#00d4ff}
+#msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+#msgs::-webkit-scrollbar{width:3px}
+#msgs::-webkit-scrollbar-thumb{background:rgba(0,212,255,.2);border-radius:2px}
+.user{align-self:flex-end;background:rgba(255,107,53,.1);border:1px solid rgba(255,107,53,.25);padding:10px 14px;border-radius:16px 4px 16px 16px;max-width:82%;font-size:14px;line-height:1.6;word-break:break-word}
+.ai{align-self:flex-start;background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.18);padding:10px 14px;border-radius:4px 16px 16px 16px;max-width:88%;font-size:14px;line-height:1.75;word-break:break-word}
+.ai p{margin-bottom:8px}
+.ai p:last-child{margin-bottom:0}
+.ai pre{margin:8px 0;border-radius:8px;overflow:hidden}
+.ai pre code{font-size:12px;line-height:1.5}
+.ai code:not(pre code){background:rgba(0,0,0,.5);padding:1px 5px;border-radius:3px;color:#00ff9d;font-family:monospace;font-size:12px}
+.ai strong{color:#00d4ff}
+.ai ul,.ai ol{margin:6px 0 6px 18px}
+.ai li{margin-bottom:3px}
+.typing{color:#00d4ff;font-size:13px;padding:4px 0;align-self:flex-start}
+.inp-area{background:#0a1520;border-top:1px solid rgba(0,212,255,.2);padding:10px 12px;flex-shrink:0;padding-bottom:max(10px,env(safe-area-inset-bottom))}
+.inp-row{display:flex;gap:8px;align-items:flex-end;background:#050a0e;border:1px solid rgba(0,212,255,.25);border-radius:24px;padding:8px 8px 8px 16px;transition:border-color .2s}
+.inp-row:focus-within{border-color:rgba(0,212,255,.5)}
+#box{flex:1;background:transparent;border:none;outline:none;color:#c8dde8;font-size:15px;font-family:inherit;resize:none;max-height:100px;line-height:1.5}
+#box::placeholder{color:#3a5a6a}
+.btn-icon{width:36px;height:36px;border-radius:50%;border:1px solid rgba(0,212,255,.4);background:rgba(0,212,255,.15);color:#00d4ff;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.btn-icon:active{transform:scale(.92)}
+.btn-icon:disabled{opacity:.4;cursor:not-allowed}
+.btn-icon.recording{background:rgba(255,51,102,.2);border-color:#ff3366;color:#ff3366;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,51,102,.4)}50%{box-shadow:0 0 0 6px rgba(255,51,102,0)}}
+.hist-bar{background:#0a1520;border-bottom:1px solid rgba(0,212,255,.1);padding:6px 10px;display:flex;gap:6px;overflow-x:auto;flex-shrink:0;scrollbar-width:none;align-items:center}
+.hist-bar::-webkit-scrollbar{display:none}
+.hist-label{color:#3a5a6a;font-size:10px;white-space:nowrap;letter-spacing:1px}
+.hist-btn{padding:4px 10px;border-radius:12px;border:1px solid rgba(0,212,255,.15);background:transparent;color:#5a7a8a;font-size:10px;cursor:pointer;white-space:nowrap;transition:all .2s}
+.hist-btn:hover{border-color:rgba(0,212,255,.4);color:#c8dde8}
+.hist-btn.active-hist{border-color:#00d4ff;color:#00d4ff;background:rgba(0,212,255,.1)}
+.clear-btn{padding:4px 10px;border-radius:12px;border:1px solid rgba(255,51,102,.2);background:transparent;color:#5a7a8a;font-size:10px;cursor:pointer;white-space:nowrap;margin-left:auto}
+.clear-btn:hover{color:#ff3366;border-color:#ff3366}
+.setup{position:fixed;inset:0;background:rgba(5,10,14,.97);display:flex;align-items:center;justify-content:center;z-index:100}
+.card{background:#0a1520;border:1px solid rgba(0,212,255,.3);border-radius:16px;padding:28px;width:90%;max-width:380px;text-align:center}
+.card h2{color:#00d4ff;font-size:20px;letter-spacing:3px;margin-bottom:8px}
+.card p{color:#5a7a8a;font-size:13px;line-height:1.6;margin-bottom:20px}
+.card input{width:100%;background:#050a0e;border:1px solid rgba(0,212,255,.3);border-radius:8px;padding:12px;color:#c8dde8;font-size:13px;font-family:monospace;outline:none;margin-bottom:12px}
+.card input:focus{border-color:#00d4ff}
+.card button{width:100%;padding:12px;background:rgba(0,212,255,.2);border:1px solid #00d4ff;border-radius:8px;color:#00d4ff;font-size:14px;cursor:pointer;letter-spacing:1px}
+.card a{color:#00ff9d;font-size:12px;display:block;margin-top:12px;text-decoration:none}
+</style>
 </head><body>
+
 <div class="setup" id="setup">
 <div class="card">
-<div style="font-size:48px;margin-bottom:12px">&#9889;</div>
+<div style="font-size:48px;margin-bottom:12px">⚡</div>
 <h2>NEXUS AI</h2>
-<p>Groq API Key ထည့်ပါ<br>မြန်မာ+English အကုန်သိတဲ့ AI</p>
-<input type="password" id="key" placeholder="gsk_ နဲ့ စတဲ့ key"/>
-<button onclick="go()">START NEXUS AI</button>
-<a href="https://console.groq.com" target="_blank">API Key မရှိဘူးလား? ဒီမှာ အခမဲ့ ရယူ</a>
-</div></div>
-<div class="hdr"><h1>&#9889; NEXUS AI</h1><p>Networking · CyberSec · GED · English · Coding</p></div>
-<div id="msgs"><div class="ai">မင်္ဂလာပါ! ငါ NEXUS AI ပါ။ မေးချင်တာ မေးပါ။ Hello! Ask me anything!</div></div>
-<div class="inp">
-<input id="box" type="text" placeholder="မေးချင်တာ ရိုက်ပါ..." onkeydown="if(event.key==='Enter')send()"/>
-<button id="btn" onclick="send()">&#10148;</button>
+<p>Groq API Key ထည့်ပါ<br><small style="color:#3a5a6a">Key ကို browser မှာသာ သိမ်းသည် — server မပို့ဘူး</small></p>
+<input type="password" id="keyInp" placeholder="gsk_xxxxxxxxxxxx"/>
+<button onclick="startAI()">🚀 START NEXUS AI</button>
+<a href="https://console.groq.com" target="_blank">API Key မရှိဘူးလား? ဒီမှာ အခမဲ့ ရယူ →</a>
 </div>
+</div>
+
+<div class="hdr">
+<div class="hdr-left">
+<h1>⚡ NEXUS AI</h1>
+<p>Advanced AI · Myanmar & English</p>
+</div>
+<div class="hdr-right">
+<div class="dot"></div>
+</div>
+</div>
+
+<div class="modes">
+<button class="mode-btn active" onclick="setMode(this,'general')">🧠 General</button>
+<button class="mode-btn" onclick="setMode(this,'networking')">🌐 Networking</button>
+<button class="mode-btn" onclick="setMode(this,'cybersec')">🛡️ CyberSec</button>
+<button class="mode-btn" onclick="setMode(this,'ged')">📚 GED</button>
+<button class="mode-btn" onclick="setMode(this,'english')">🔤 English</button>
+<button class="mode-btn" onclick="setMode(this,'coding')">💻 Coding</button>
+</div>
+
+<div class="hist-bar" id="histBar">
+<span class="hist-label">HISTORY:</span>
+<button class="hist-btn active-hist" onclick="loadSession('current')" id="h-current">Current</button>
+<button class="clear-btn" onclick="clearCurrent()">🗑 Clear</button>
+</div>
+
+<div id="msgs">
+<div class="ai">မင်္ဂလာပါ! ငါ <strong>NEXUS AI</strong> ပါ 🤖<br><br>
+Mode ရွေးပြီး မေးချင်တာ မေးပါ — မြန်မာ / English နှစ်ဘာသာ အပြည့်အစုံ ကျွမ်းကျင်သည်။<br><br>
+🎤 Mic ခလုတ် နှိပ်ပြီး စကားပြောလည်း ရသည်။</div>
+</div>
+
+<div class="inp-area">
+<div class="inp-row">
+<textarea id="box" rows="1" placeholder="မေးချင်တာ ရိုက်ပါ... / Ask anything..." onkeydown="hk(event)" oninput="rs(this)"></textarea>
+<button class="btn-icon" id="micBtn" onclick="toggleMic()" title="Voice Input">🎤</button>
+<button class="btn-icon" id="sendBtn" onclick="send()" title="Send">➤</button>
+</div>
+</div>
+
 <script>
-var K='',hist=[],busy=false;
-var SYS='You are NEXUS AI. Bilingual Myanmar/English auto-detect. Expert: Networking, Cybersecurity (ethical), GED, English, Coding. Be detailed.';
-function go(){var k=document.getElementById('key').value.trim();if(!k.startsWith('gsk_')){alert('gsk_ နဲ့ စတဲ့ key ထည့်ပါ');return;}K=k;document.getElementById('setup').style.display='none';}
-async function send(){
-if(busy)return;                                                              var b=document.getElementById('box'),t=b.value.trim();
-if(!t||!K)return;
-busy=true;document.getElementById('btn').disabled=true;b.value='';
+var KEY='',mode='general',hist=[],busy=false,recognition=null,recording=false;
+var sessions={};
+
+var PROMPTS={
+general:"You are NEXUS AI — supremely knowledgeable AI. Auto-detect language: Myanmar input=Myanmar reply, English=English. Expert in everything. Be detailed, accurate, use examples. Format with markdown.",
+networking:"You are NEXUS AI — NETWORKING EXPERT (CCIE level). Auto-detect language. Expert: OSI model, TCP/IP, IPv4/IPv6, subnetting/CIDR, routing (OSPF/BGP/EIGRP/RIP), switching (VLANs/STP/EtherChannel), DNS/DHCP/NTP, VPN (IPSec/OpenVPN/WireGuard), firewalls/ACLs/NAT, wireless (802.11/WPA3), Wireshark, Cisco IOS commands, cloud networking. Give CLI commands, diagrams, step-by-step.",
+cybersec:"You are NEXUS AI — CYBERSECURITY EXPERT (OSCP/CEH level). Auto-detect language. Expert: recon (OSINT/Shodan/Nmap), exploitation (Metasploit/manual), web attacks (SQLi/XSS/SSRF/IDOR/XXE), privilege escalation (Linux/Windows), AD attacks (Kerberoasting/Pass-the-Hash/BloodHound), forensics (Autopsy/Volatility), SIEM, CTF. Kali Linux expert. EDUCATIONAL/ETHICAL USE ONLY.",
+ged:"You are NEXUS AI — GED EXPERT TUTOR. Auto-detect language. Be patient and encouraging. Math: algebra/geometry/stats/functions — solve step-by-step. Science: life/physical/earth science. RLA: reading/grammar/essay writing (claim-evidence-warrant). Social Studies: US history/civics/geography/economics. Explain concept → example → practice problem.",
+english:"You are NEXUS AI — ENGLISH LANGUAGE EXPERT. Auto-detect language. Expert: all grammar tenses/conditionals/passive/modals, vocabulary/idioms/phrasal verbs, writing (essays/emails/academic), IELTS/TOEFL/TOEIC prep. For Myanmar speakers: compare with Myanmar language patterns. Give abundant examples.",
+coding:"You are NEXUS AI — CODING EXPERT (Senior Engineer). Auto-detect language. Expert: Python/Bash/C++/JavaScript/SQL, algorithms/data structures, Linux/git/docker. Write clean commented code. Explain every line. Show best practices."
+};
+
+// Load key
+KEY=localStorage.getItem('nxkey')||'';
+if(KEY.startsWith('gsk_'))document.getElementById('setup').style.display='none';
+
+// Load sessions
+try{sessions=JSON.parse(localStorage.getItem('nxsessions')||'{}')}catch(e){sessions={}}
+renderHistBar();
+
+function startAI(){
+var k=document.getElementById('keyInp').value.trim();
+if(!k.startsWith('gsk_')){alert('gsk_ နဲ့ စတဲ့ Groq API key ထည့်ပါ');return;}
+KEY=k;localStorage.setItem('nxkey',k);
+document.getElementById('setup').style.display='none';
+}
+
+function setMode(btn,m){
+document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+btn.classList.add('active');
+mode=m;
+}
+
+function rs(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px'}
+function hk(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}}
+
+function renderMsg(text){
+// Parse markdown-like formatting
+var t=text
+.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+.replace(/```(\w*)\n?([\s\S]*?)```/g,function(_,lang,code){
+return '<pre><code class="'+(lang||'plaintext')+'">'+code.trim()+'</code></pre>';
+})
+.replace(/`([^`\n]+)`/g,'<code>$1</code>')
+.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+.replace(/\*(.*?)\*/g,'<em>$1</em>')
+.replace(/^### (.*$)/gm,'<strong style="color:#00ff9d">$1</strong>')
+.replace(/^## (.*$)/gm,'<strong style="color:#00d4ff;font-size:15px">$1</strong>')
+.replace(/^# (.*$)/gm,'<strong style="color:#00d4ff;font-size:16px">$1</strong>')
+.replace(/^\- (.*$)/gm,'<li>$1</li>')
+.replace(/^(\d+)\. (.*$)/gm,'<li>$2</li>')
+.replace(/\n/g,'<br>');
+return t;
+}
+
+function addMsg(role,text){
 var m=document.getElementById('msgs');
-var u=document.createElement('div');u.className='user';u.textContent=t;m.appendChild(u);
-var td=document.createElement('div');td.className='ai';td.id='td';td.textContent='တွေးနေသည်...';m.appendChild(td);
+var d=document.createElement('div');
+d.className=role;
+if(role==='ai'){
+d.innerHTML=renderMsg(text);
+setTimeout(function(){
+d.querySelectorAll('pre code').forEach(function(el){hljs.highlightElement(el);});
+},50);
+} else {
+d.textContent=text;
+}
+m.appendChild(d);
 m.scrollTop=m.scrollHeight;
-hist.push({role:'user',content:t});
+return d;
+}
+
+function saveSession(){
+var key='session_'+Date.now();
+sessions[key]={
+time:new Date().toLocaleString('my-MM'),
+mode:mode,
+hist:hist.slice(),
+preview:hist.length>0?hist[0].content.substring(0,30):'...'
+};
+// Keep only last 10 sessions
+var keys=Object.keys(sessions);
+if(keys.length>10){delete sessions[keys[0]];}
+localStorage.setItem('nxsessions',JSON.stringify(sessions));
+renderHistBar();
+}
+
+function renderHistBar(){
+var bar=document.getElementById('histBar');
+var old=bar.querySelectorAll('.hist-btn:not(#h-current)');
+old.forEach(function(b){b.remove()});
+var clearBtn=bar.querySelector('.clear-btn');
+var keys=Object.keys(sessions).reverse().slice(0,5);
+keys.forEach(function(k){
+var s=sessions[k];
+var btn=document.createElement('button');
+btn.className='hist-btn';
+btn.textContent=s.preview+'...';
+btn.title=s.time+' · '+s.mode;
+btn.onclick=function(){loadSession(k);};
+bar.insertBefore(btn,clearBtn);
+});
+}
+
+function loadSession(k){
+document.querySelectorAll('.hist-btn').forEach(b=>b.classList.remove('active-hist'));
+if(k==='current'){
+document.getElementById('h-current').classList.add('active-hist');
+return;
+}
+var s=sessions[k];
+if(!s)return;
+hist=s.hist.slice();
+var m=document.getElementById('msgs');
+m.innerHTML='';
+hist.forEach(function(msg){
+addMsg(msg.role==='user'?'user':'ai',msg.content);
+});
+event.target.classList.add('active-hist');
+}
+
+function clearCurrent(){
+hist=[];
+var m=document.getElementById('msgs');
+m.innerHTML='<div class="ai">Chat cleared. မေးချင်တာ မေးပါ 💪</div>';
+}
+
+async function send(){
+if(busy)return;
+var box=document.getElementById('box');
+var txt=box.value.trim();
+if(!txt||!KEY)return;
+busy=true;
+document.getElementById('sendBtn').disabled=true;
+box.value='';box.style.height='auto';
+
+addMsg('user',txt);
+hist.push({role:'user',content:txt});
+
+var td=document.createElement('div');
+td.className='typing';td.id='td';td.textContent='NEXUS AI တွေးနေသည်...';
+document.getElementById('msgs').appendChild(td);
+document.getElementById('msgs').scrollTop=99999;
+
 try{
-var r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+K},body:JSON.stringify({model:'llama-3.3-70b-versatile',messages:[{role:'system',content:SYS}].concat(hist),max_tokens:2048,temperature:0.7})});
+var r=await fetch('https://api.groq.com/openai/v1/chat/completions',{
+method:'POST',
+headers:{'Content-Type':'application/json','Authorization':'Bearer '+KEY},
+body:JSON.stringify({
+model:'llama-3.3-70b-versatile',
+messages:[{role:'system',content:PROMPTS[mode]}].concat(hist),
+max_tokens:2048,
+temperature:0.7
+})
+});
 var d=await r.json();
-document.getElementById('td').remove();
-if(d.error){hist.pop();var e=document.createElement('div');e.className='ai';e.textContent='Error: '+d.error.message;m.appendChild(e);}
-else{var rep=d.choices[0].message.content;hist.push({role:'assistant',content:rep});var a=document.createElement('div');a.className='ai';a.textContent=rep;m.appendChild(a);}
-}catch(ex){document.getElementById('td')?.remove();hist.pop();var x=document.createElement('div');x.className='ai';x.textContent='Error: '+ex.message;m.appendChild(x);}
-busy=false;document.getElementById('btn').disabled=false;m.scrollTop=m.scrollHeight;b.focus();
+document.getElementById('td')?.remove();
+if(d.error){
+hist.pop();
+addMsg('ai','❌ Error: '+d.error.message);
+} else {
+var rep=d.choices[0].message.content;
+hist.push({role:'assistant',content:rep});
+addMsg('ai',rep);
+saveSession();
+}
+} catch(e){
+document.getElementById('td')?.remove();
+hist.pop();
+addMsg('ai','❌ '+e.message);
+}
+busy=false;
+document.getElementById('sendBtn').disabled=false;
+document.getElementById('box').focus();
+}
+
+// Voice Input
+function toggleMic(){
+if(!('webkitSpeechRecognition' in window)&&!('SpeechRecognition' in window)){
+alert('Browser က voice input မပံ့ပိုးဘူး — Chrome သုံးပါ');return;
+}
+if(recording){
+recognition.stop();return;
+}
+var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+recognition=new SR();
+recognition.lang='my-MM';
+recognition.continuous=false;
+recognition.interimResults=false;
+recognition.onstart=function(){
+recording=true;
+document.getElementById('micBtn').classList.add('recording');
+document.getElementById('micBtn').textContent='⏹';
+};
+recognition.onresult=function(e){
+var txt=e.results[0][0].transcript;
+document.getElementById('box').value=txt;
+rs(document.getElementById('box'));
+};
+recognition.onend=function(){
+recording=false;
+document.getElementById('micBtn').classList.remove('recording');
+document.getElementById('micBtn').textContent='🎤';
+};
+recognition.onerror=function(){
+recording=false;
+document.getElementById('micBtn').classList.remove('recording');
+document.getElementById('micBtn').textContent='🎤';
+};
+recognition.start();
 }
 </script>
 </body></html>
