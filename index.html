@@ -2,65 +2,83 @@
 <html><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#00d4ff">
+<link rel="manifest" href="manifest.json">
 <title>NEXUS AI</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#050a0e;--bg2:#0a1520;--accent:#00d4ff;--accent2:#00ff9d;--text:#c8dde8;--dim:#3a5a6a;--border:rgba(0,212,255,.18)}
-body{background:var(--bg);color:var(--text);font-family:Arial,sans-serif;display:flex;flex-direction:column;height:100dvh;overflow:hidden}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans Myanmar',Arial,sans-serif;display:flex;flex-direction:column;height:100dvh;overflow:hidden}
 body.light{--bg:#f0f4f8;--bg2:#fff;--accent:#0066cc;--accent2:#00aa66;--text:#1a2a3a;--dim:#7a8a9a;--border:rgba(0,102,204,.2)}
 .hdr{background:var(--bg2);padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.hdr h1{color:var(--accent);font-size:16px;letter-spacing:2px}
-.hdr p{color:var(--dim);font-size:9px;margin-top:1px}
+.hdr h1{color:var(--accent);font-size:16px;letter-spacing:2px;font-family:monospace}
+.hdr p{color:var(--dim);font-size:9px;margin-top:1px;font-family:monospace}
 .hdr-r{display:flex;gap:6px;align-items:center}
-.ibtn{background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--dim);cursor:pointer;padding:5px 8px;font-size:13px;transition:all .2s}
+.ibtn{background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--dim);cursor:pointer;padding:5px 8px;font-size:12px;transition:all .2s;font-family:inherit}
 .ibtn:hover{border-color:var(--accent);color:var(--accent)}
-.dot{width:7px;height:7px;border-radius:50%;background:var(--accent2);box-shadow:0 0 6px var(--accent2);animation:bl 1.5s infinite}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--accent2);box-shadow:0 0 6px var(--accent2);animation:bl 1.5s infinite;flex-shrink:0}
 @keyframes bl{0%,100%{opacity:1}50%{opacity:.3}}
 .modes{background:var(--bg2);border-bottom:1px solid var(--border);padding:6px 10px;display:flex;gap:6px;overflow-x:auto;flex-shrink:0;scrollbar-width:none}
 .modes::-webkit-scrollbar{display:none}
-.mbtn{padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--dim);font-size:11px;cursor:pointer;white-space:nowrap;transition:all .2s}
+.mbtn{padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--dim);font-size:11px;cursor:pointer;white-space:nowrap;transition:all .2s;font-family:inherit}
 .mbtn.on{background:rgba(0,212,255,.15);border-color:var(--accent);color:var(--accent)}
 .hbar{background:var(--bg2);border-bottom:1px solid rgba(0,212,255,.1);padding:5px 10px;display:flex;gap:6px;overflow-x:auto;flex-shrink:0;scrollbar-width:none;align-items:center}
 .hbar::-webkit-scrollbar{display:none}
-.hlabel{color:var(--dim);font-size:10px;white-space:nowrap}
-.hbtn{padding:4px 10px;border-radius:12px;border:1px solid var(--border);background:transparent;color:var(--dim);font-size:10px;cursor:pointer;white-space:nowrap;transition:all .2s;max-width:90px;overflow:hidden;text-overflow:ellipsis}
+.hlbl{color:var(--dim);font-size:10px;white-space:nowrap;font-family:monospace}
+.hbtn{padding:4px 10px;border-radius:12px;border:1px solid var(--border);background:transparent;color:var(--dim);font-size:10px;cursor:pointer;white-space:nowrap;transition:all .2s;max-width:90px;overflow:hidden;text-overflow:ellipsis;font-family:inherit}
 .hbtn:hover{border-color:var(--accent);color:var(--text)}
 .hbtn.on{border-color:var(--accent);color:var(--accent);background:rgba(0,212,255,.1)}
-.cbtn{padding:4px 10px;border-radius:12px;border:1px solid rgba(255,51,102,.2);background:transparent;color:var(--dim);font-size:10px;cursor:pointer;white-space:nowrap;margin-left:auto;flex-shrink:0}
-.cbtn:hover{color:#ff3366;border-color:#ff3366}
+.xbtn{padding:4px 10px;border-radius:12px;border:1px solid rgba(255,51,102,.2);background:transparent;color:var(--dim);font-size:10px;cursor:pointer;white-space:nowrap;margin-left:auto;flex-shrink:0;font-family:inherit}
+.xbtn:hover{color:#ff3366;border-color:#ff3366}
+.prompts{background:var(--bg2);border-bottom:1px solid var(--border);padding:6px 10px;display:flex;gap:6px;overflow-x:auto;flex-shrink:0;scrollbar-width:none}
+.prompts::-webkit-scrollbar{display:none}
+.pbtn{padding:5px 12px;border-radius:16px;border:1px solid rgba(0,255,157,.2);background:transparent;color:var(--accent2);font-size:11px;cursor:pointer;white-space:nowrap;transition:all .2s;font-family:inherit}
+.pbtn:hover{background:rgba(0,255,157,.1);border-color:var(--accent2)}
 #msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
 #msgs::-webkit-scrollbar{width:3px}
 #msgs::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-.umsg{align-self:flex-end;background:rgba(255,107,53,.1);border:1px solid rgba(255,107,53,.25);padding:10px 14px;border-radius:16px 4px 16px 16px;max-width:82%;font-size:14px;line-height:1.6;word-break:break-word}
+.umsg{align-self:flex-end;background:rgba(255,107,53,.1);border:1px solid rgba(255,107,53,.25);padding:10px 14px;border-radius:16px 4px 16px 16px;max-width:82%;font-size:14px;line-height:1.7;word-break:break-word}
 .awrap{align-self:flex-start;max-width:90%;display:flex;flex-direction:column;gap:4px}
 .amsg{background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.18);padding:10px 14px;border-radius:4px 16px 16px 16px;font-size:14px;line-height:1.8;word-break:break-word}
 .amsg p{margin-bottom:8px}
 .amsg p:last-child{margin-bottom:0}
 .amsg pre{margin:8px 0;border-radius:8px;overflow:hidden}
-.amsg pre code{font-size:12px;line-height:1.5}
+.amsg pre code{font-size:12px;line-height:1.5;font-family:monospace}
 .amsg code:not(pre code){background:rgba(0,0,0,.5);padding:1px 5px;border-radius:3px;color:var(--accent2);font-family:monospace;font-size:12px}
 .amsg strong{color:var(--accent)}
-.amsg ul,.amsg ol{margin:6px 0 6px 18px}
-.amsg li{margin-bottom:3px}
-.amsg table{border-collapse:collapse;width:100%;margin:8px 0;font-size:13px}
-.amsg th{background:rgba(0,212,255,.15);padding:6px 10px;text-align:left;border:1px solid var(--border)}
-.amsg td{padding:6px 10px;border:1px solid var(--border)}
+.amsg em{color:var(--accent2);font-style:italic}
+.amsg ul,.amsg ol{margin:6px 0 6px 20px}
+.amsg li{margin-bottom:4px;line-height:1.7}
+.amsg table{border-collapse:collapse;width:100%;margin:10px 0;font-size:13px}
+.amsg th{background:rgba(0,212,255,.15);padding:7px 12px;text-align:left;border:1px solid var(--border);color:var(--accent)}
+.amsg td{padding:7px 12px;border:1px solid var(--border)}
+.amsg tr:nth-child(even) td{background:rgba(0,212,255,.03)}
+.amsg h1,.amsg h2,.amsg h3{margin:10px 0 6px;color:var(--accent)}
+.amsg h1{font-size:16px}
+.amsg h2{font-size:15px}
+.amsg h3{font-size:14px;color:var(--accent2)}
+.amsg blockquote{border-left:3px solid var(--accent);padding:6px 12px;margin:8px 0;background:rgba(0,212,255,.05);border-radius:0 8px 8px 0;color:var(--dim)}
 .aacts{display:flex;gap:6px}
-.abtn{padding:3px 10px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--dim);font-size:10px;cursor:pointer;transition:all .2s}
+.abtn{padding:3px 10px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--dim);font-size:10px;cursor:pointer;transition:all .2s;font-family:inherit}
 .abtn:hover{border-color:var(--accent);color:var(--accent)}
 .iprv{max-width:180px;max-height:130px;border-radius:8px;border:1px solid var(--border);margin-bottom:6px;display:block}
-.typing{color:var(--accent);font-size:13px;padding:4px 0;align-self:flex-start}
+.typing{align-self:flex-start;background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.18);padding:10px 14px;border-radius:4px 16px 16px 16px;display:flex;gap:4px;align-items:center}
+.td{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:td 1s infinite}
+.td:nth-child(2){animation-delay:.2s}
+.td:nth-child(3){animation-delay:.4s}
+@keyframes td{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
 .iarea{background:var(--bg2);border-top:1px solid var(--border);padding:10px 12px;flex-shrink:0;padding-bottom:max(10px,env(safe-area-inset-bottom))}
 .irow{display:flex;gap:6px;align-items:flex-end;background:var(--bg);border:1px solid var(--border);border-radius:24px;padding:8px 8px 8px 14px;transition:border-color .2s}
 .irow:focus-within{border-color:rgba(0,212,255,.5)}
-#box{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-size:15px;font-family:inherit;resize:none;max-height:100px;line-height:1.5}
+#box{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-size:15px;font-family:inherit;resize:none;max-height:100px;line-height:1.6}
 #box::placeholder{color:var(--dim)}
-.bti{width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:rgba(0,212,255,.1);color:var(--accent);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.bti{width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:rgba(0,212,255,.1);color:var(--accent);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;font-family:inherit}
 .bti:active{transform:scale(.9)}
 .bti:disabled{opacity:.4;cursor:not-allowed}
 .bti.rec{background:rgba(255,51,102,.2);border-color:#ff3366;color:#ff3366;animation:rp 1s infinite}
@@ -69,14 +87,16 @@ body.light{--bg:#f0f4f8;--bg2:#fff;--accent:#0066cc;--accent2:#00aa66;--text:#1a
 #imgInput{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
 .setup{position:fixed;inset:0;background:rgba(5,10,14,.97);display:flex;align-items:center;justify-content:center;z-index:100}
 .card{background:var(--bg2);border:1px solid rgba(0,212,255,.3);border-radius:16px;padding:28px;width:90%;max-width:380px;text-align:center}
-.card h2{color:var(--accent);font-size:20px;letter-spacing:3px;margin-bottom:8px}
+.card h2{color:var(--accent);font-size:20px;letter-spacing:3px;margin-bottom:8px;font-family:monospace}
 .card p{color:var(--dim);font-size:13px;line-height:1.6;margin-bottom:20px}
 .card input{width:100%;background:var(--bg);border:1px solid rgba(0,212,255,.3);border-radius:8px;padding:12px;color:var(--text);font-size:13px;font-family:monospace;outline:none;margin-bottom:12px}
 .card input:focus{border-color:var(--accent)}
-.card button{width:100%;padding:12px;background:rgba(0,212,255,.2);border:1px solid var(--accent);border-radius:8px;color:var(--accent);font-size:14px;cursor:pointer}
+.card button{width:100%;padding:12px;background:rgba(0,212,255,.2);border:1px solid var(--accent);border-radius:8px;color:var(--accent);font-size:14px;cursor:pointer;font-family:inherit}
 .card a{color:var(--accent2);font-size:12px;display:block;margin-top:12px;text-decoration:none}
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:20px;font-size:13px;font-weight:bold;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1}
+.cursor{display:inline-block;width:2px;height:1em;background:var(--accent);margin-left:2px;animation:cur .7s infinite;vertical-align:text-bottom}
+@keyframes cur{0%,100%{opacity:1}50%{opacity:0}}
 </style>
 </head><body>
 
@@ -84,77 +104,102 @@ body.light{--bg:#f0f4f8;--bg2:#fff;--accent:#0066cc;--accent2:#00aa66;--text:#1a
 <div class="card">
 <div style="font-size:48px;margin-bottom:12px">&#9889;</div>
 <h2>NEXUS AI</h2>
-<p>Groq API Key ထည့်ပါ<br><small style="color:#3a5a6a">Key သည် browser မှာသာ သိမ်းသည်</small></p>
+<p>Groq API Key ထည့်ပါ<br><small style="color:#3a5a6a">Key သည် browser မှာသာ သိမ်းသည် — မည်သူမှ မမြင်ရ</small></p>
 <input type="password" id="keyInp" placeholder="gsk_xxxxxxxxxxxx"/>
-<button onclick="startAI()">START NEXUS AI</button>
-<a href="https://console.groq.com" target="_blank">API Key မရှိဘူးလား? ဒီမှာ အခမဲ့ ရယူ</a>
+<button onclick="startAI()">&#9889; START NEXUS AI</button>
+<a href="https://console.groq.com" target="_blank">API Key မရှိဘူးလား? ဒီမှာ အခမဲ့ ရယူ &#8594;</a>
 </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <div class="hdr">
-<div><h1>&#9889; NEXUS AI</h1><p>Advanced AI v4.0 · Myanmar and English</p></div>
+<div>
+<h1>&#9889; NEXUS AI</h1>
+<p>Advanced AI v5.0 · Myanmar &amp; English</p>
+</div>
 <div class="hdr-r">
-<button class="ibtn" onclick="exportChat()">Save</button>
-<button class="ibtn" onclick="toggleTheme()" id="tbtn">Light</button>
+<button class="ibtn" onclick="exportChat()">&#128190; Save</button>
+<button class="ibtn" onclick="toggleTheme()" id="tbtn">&#9788; Light</button>
 <div class="dot"></div>
 </div>
 </div>
 
 <div class="modes">
-<button class="mbtn on" onclick="setMode(this,'general')">General</button>
-<button class="mbtn" onclick="setMode(this,'networking')">Networking</button>
-<button class="mbtn" onclick="setMode(this,'cybersec')">CyberSec</button>
-<button class="mbtn" onclick="setMode(this,'ged')">GED</button>
-<button class="mbtn" onclick="setMode(this,'english')">English</button>
-<button class="mbtn" onclick="setMode(this,'coding')">Coding</button>
+<button class="mbtn on" onclick="setMode(this,'general')">&#129504; General</button>
+<button class="mbtn" onclick="setMode(this,'networking')">&#127760; Network</button>
+<button class="mbtn" onclick="setMode(this,'cybersec')">&#128737; CyberSec</button>
+<button class="mbtn" onclick="setMode(this,'ged')">&#128218; GED</button>
+<button class="mbtn" onclick="setMode(this,'english')">&#128308; English</button>
+<button class="mbtn" onclick="setMode(this,'coding')">&#128187; Coding</button>
 </div>
 
+<div class="prompts" id="promptBar"></div>
+
 <div class="hbar" id="hbar">
-<span class="hlabel">HISTORY:</span>
+<span class="hlbl">HISTORY:</span>
 <button class="hbtn on" id="hcur" onclick="newChat()">+ New</button>
-<button class="cbtn" onclick="clearAll()">Clear All</button>
+<button class="xbtn" onclick="clearAll()">&#128465; Clear</button>
 </div>
 
 <div id="msgs">
 <div class="awrap"><div class="amsg">
-<strong>NEXUS AI v4.0</strong> မင်္ဂလာပါ! <br><br>
-Mode ရွေးပြီး မေးပါ — မြန်မာ / English နှစ်ဘာသာ<br>
-Math formula, Image upload, Code highlight, Voice, Export — အကုန်ပါသည်
+<strong>NEXUS AI v5.0</strong> မင်္ဂလာပါ! &#129302;<br><br>
+&#9989; Streaming response (ChatGPT style)<br>
+&#9989; Prompt templates (quick buttons)<br>
+&#9989; Math formula rendering<br>
+&#9989; Image upload &amp; analysis<br>
+&#9989; Code syntax highlighting<br>
+&#9989; Voice input<br>
+&#9989; Chat history<br>
+&#9989; Export TXT<br>
+&#9989; Dark/Light mode<br>
+&#9989; PWA install support<br><br>
+Mode ရွေးပြီး မေးချင်တာ မေးပါ &#128170;
 </div></div>
 </div>
 
 <div class="iarea">
 <div class="irow">
 <textarea id="box" rows="1" placeholder="မေးချင်တာ ရိုက်ပါ... / Ask anything..." onkeydown="hk(event)" oninput="rs(this)"></textarea>
-<div class="bti imgwrap" title="Image">Img<input type="file" id="imgInput" accept="image/*" onchange="onImg(this)"></div>
-<button class="bti" id="micBtn" onclick="toggleMic()">Mic</button>
-<button class="bti" id="sendBtn" onclick="send()">Go</button>
+<div class="bti imgwrap" title="Image">&#128247;<input type="file" id="imgInput" accept="image/*" onchange="onImg(this)"></div>
+<button class="bti" id="micBtn" onclick="toggleMic()" title="Voice">&#127908;</button>
+<button class="bti" id="sendBtn" onclick="send()" title="Send">&#10148;</button>
 </div>
 </div>
 
 <script>
 var KEY='',mode='general',hist=[],busy=false,isRec=false,recog=null,imgData=null,isDark=true,sessions={};
+
+var PROMPTS_BY_MODE={
+general:['မင်းဘာတွေ သိသလဲ?','Python ကို ရှင်းပြပါ','Science fact တစ်ခု ပြောပြ','Math ပုစ္ဆာ တစ်ခု ပေးပါ'],
+networking:['OSI model ရှင်းပြပါ','Subnetting ဆိုတာ ဘာလဲ?','TCP vs UDP ကွာခြားချက်','VPN ဘယ်လို အလုပ်လုပ်သလဲ?'],
+cybersec:['Nmap scan command တွေ','SQL Injection ဆိုတာ ဘာလဲ?','Privilege escalation Linux','CTF beginner tips'],
+ged:['GED Math algebra ရှင်းပြ','Scientific method ဆိုတာ','Essay writing tips','US Constitution ဆိုတာ'],
+english:['Present perfect tense သုံးနည်း','Phrasal verbs အသုံးများ','IELTS writing tips','Grammar mistakes တွေ'],
+coding:['Python basics ကနေ စပြောပြ','Bash script ရေးနည်း','Algorithm complexity ဆိုတာ','Git commands အသုံးများ']
+};
+
 var P={
-general:"You are NEXUS AI v4.0. Auto-detect language: Myanmar input=Myanmar reply, English=English reply. Expert in ALL fields. Detailed, accurate answers. Use markdown: **bold**, `code`, ```lang\\ncodeblock```, tables, lists. Math: use $formula$ inline and $$formula$$ block.",
-networking:"You are NEXUS AI - NETWORKING EXPERT CCIE level. Auto-detect language Myanmar/English. Expert: OSI, TCP/IP, IPv4/IPv6, subnetting, routing OSPF/BGP/EIGRP/RIP, switching VLANs/STP, DNS/DHCP/VPN/firewalls/NAT/wireless, Wireshark, Cisco IOS, cloud AWS/Azure. Give commands, diagrams, steps. Use markdown.",
-cybersec:"You are NEXUS AI - CYBERSECURITY EXPERT OSCP level. Auto-detect language. Offensive: recon OSINT/Nmap, Metasploit, web attacks SQLi/XSS/SSRF/IDOR, privesc Linux/Windows, AD attacks Kerberoasting/PTH/BloodHound. Defensive: SIEM, forensics, IR. CTF expert. ETHICAL/EDUCATIONAL ONLY. Use markdown.",
-ged:"You are NEXUS AI - GED EXPERT TUTOR. Auto-detect language. Patient and encouraging. Math: step-by-step with LaTeX $formula$. Science, RLA, Social Studies. Method: explain concept, example, practice problem. Use markdown.",
-english:"You are NEXUS AI - ENGLISH EXPERT. Auto-detect language. Grammar all tenses/conditionals/passive, vocabulary/idioms/collocations, writing essays/emails, IELTS/TOEFL. For Myanmar speakers compare with Myanmar patterns. Use markdown tables for examples.",
-coding:"You are NEXUS AI - CODING EXPERT Senior Engineer. Auto-detect language. Python/Bash/C++/JS/SQL/algorithms/Linux/git/docker. Clean commented code in codeblocks with language tag. Explain every part. Best practices. Use markdown."
+general:"You are NEXUS AI v5.0 — supremely knowledgeable AI. LANGUAGE: Auto-detect — Myanmar input=Myanmar reply (use Noto Sans Myanmar font), English=English reply. Expert in ALL fields. Detailed, accurate. Use markdown: **bold**, *italic*, `code`, ```lang\\ncode```, tables |col|col|, > blockquote, # headers, - lists. Math: $inline$ and $$block$$. Format responses beautifully.",
+networking:"You are NEXUS AI — NETWORKING EXPERT CCIE level. Auto-detect language Myanmar/English. Expert: OSI all 7 layers, TCP/IP stack, IPv4/IPv6, subnetting CIDR, routing OSPF/BGP/EIGRP/RIP, switching VLANs/STP/RSTP/EtherChannel, DNS/DHCP/NTP/SNMP/Syslog, VPN IPSec/OpenVPN/WireGuard/MPLS, firewalls ACLs/NAT/PAT, wireless 802.11ax/WPA3/RADIUS, Wireshark/tcpdump/nmap/iperf, Cisco IOS commands, cloud AWS VPC/Azure VNet. Give CLI commands, ASCII diagrams, troubleshooting steps. Use markdown.",
+cybersec:"You are NEXUS AI — CYBERSECURITY EXPERT OSCP/CEH level. Auto-detect language. Offensive security: recon OSINT/Shodan/Maltego/theHarvester, scanning Nmap/Masscan/Nikto, exploitation Metasploit/manual/CVEs, web attacks SQLi/XSS/CSRF/SSRF/IDOR/XXE/SSTI/Path Traversal, privesc Linux/Windows, AD attacks Kerberoasting/AS-REP/Pass-the-Hash/DCSync/BloodHound, post-exploitation. Defensive: SIEM Splunk/ELK, forensics Autopsy/Volatility, incident response, threat hunting. CTF: binary exploitation/reversing/crypto/stego/forensics. ETHICAL/EDUCATIONAL USE ONLY. Use markdown with code blocks.",
+ged:"You are NEXUS AI — GED EXPERT TUTOR. Auto-detect language. Be patient encouraging. Math: arithmetic/algebra/geometry/stats/functions — solve step by step, use $LaTeX$ for formulas like $ax^2+bx+c=0$ and $$x=\\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}$$. Science: life/physical/earth science, scientific method. RLA: reading comprehension/grammar/essay writing with claim-evidence-warrant. Social Studies: US history/civics/geography/economics/document analysis. Method: concept → example → practice → check. Use markdown tables and lists.",
+english:"You are NEXUS AI — ENGLISH LANGUAGE EXPERT. Auto-detect language. Expert: ALL 12 tenses with uses and examples, conditionals 0/1/2/3/mixed, passive voice, reported speech, modals, articles/determiners. Vocabulary: collocations/idioms/phrasal verbs/academic words/connotations. Writing: paragraph structure/essay types/academic writing/emails/business English. Reading: inference/main idea/author purpose/literary devices. IELTS/TOEFL/TOEIC test prep. For Myanmar speakers: compare with Myanmar language patterns. Use markdown tables for grammar examples.",
+coding:"You are NEXUS AI — CODING EXPERT Senior Engineer. Auto-detect language. Expert: Python basics-to-advanced/OOP/decorators/async, Bash scripting/grep/awk/sed/cron, C/C++ pointers/memory, JavaScript ES6/async/Node.js, SQL queries/joins/optimization/PostgreSQL/SQLite. Algorithms: sorting/searching/trees/graphs/DP/Big O. Linux: git/docker/ssh/vim/tmux/permissions/systemd. Always write clean commented code in ```language codeblocks```. Explain every line. Best practices and common pitfalls. Use markdown."
 };
 
 KEY=localStorage.getItem('nxk')||'';
 if(KEY.startsWith('gsk_'))document.getElementById('setup').style.display='none';
 isDark=localStorage.getItem('nxth')!=='light';
-if(!isDark){document.body.classList.add('light');document.getElementById('tbtn').textContent='Dark';}
+if(!isDark){document.body.classList.add('light');document.getElementById('tbtn').textContent='&#9790; Dark';}
 try{sessions=JSON.parse(localStorage.getItem('nxs')||'{}')}catch(e){}
 renderHBar();
+renderPrompts('general');
 
 function startAI(){
 var k=document.getElementById('keyInp').value.trim();
-if(!k.startsWith('gsk_')){alert('gsk_ နဲ့ စတဲ့ key ထည့်ပါ');return;}
+if(!k.startsWith('gsk_')){alert('gsk_ နဲ့ စတဲ့ Groq API key ထည့်ပါ');return;}
 KEY=k;localStorage.setItem('nxk',k);
 document.getElementById('setup').style.display='none';
 }
@@ -162,13 +207,30 @@ document.getElementById('setup').style.display='none';
 function toggleTheme(){
 isDark=!isDark;
 document.body.classList.toggle('light',!isDark);
-document.getElementById('tbtn').textContent=isDark?'Light':'Dark';
+document.getElementById('tbtn').innerHTML=isDark?'&#9788; Light':'&#9790; Dark';
 localStorage.setItem('nxth',isDark?'dark':'light');
 }
 
 function setMode(btn,m){
 document.querySelectorAll('.mbtn').forEach(function(b){b.classList.remove('on');});
 btn.classList.add('on');mode=m;
+renderPrompts(m);
+}
+
+function renderPrompts(m){
+var bar=document.getElementById('promptBar');
+bar.innerHTML='';
+(PROMPTS_BY_MODE[m]||[]).forEach(function(p){
+var b=document.createElement('button');
+b.className='pbtn';b.textContent=p;
+b.onclick=function(){quickAsk(p);};
+bar.appendChild(b);
+});
+}
+
+function quickAsk(text){
+document.getElementById('box').value=text;
+send();
 }
 
 function rs(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px';}
@@ -184,58 +246,78 @@ function doMath(el){
 try{renderMathInElement(el,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}catch(e){}
 }
 
-function fmt(text){
-return '<p>'+text
+function parseMarkdown(text){
+return text
 .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-.replace(/```(\w*)\n?([\s\S]*?)```/g,function(_,l,c){return '<pre><code class="language-'+(l||'plaintext')+'">'+c.trim()+'</code></pre>';})
+.replace(/```(\w*)\n?([\s\S]*?)```/g,function(_,l,c){
+return '<pre><code class="language-'+(l||'plaintext')+'">'+c.trim()+'</code></pre>';
+})
 .replace(/`([^`\n]+)`/g,'<code>$1</code>')
 .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
 .replace(/\*(.*?)\*/g,'<em>$1</em>')
-.replace(/^### (.+)$/gm,'<strong style="color:var(--accent2)">$1</strong>')
-.replace(/^## (.+)$/gm,'<strong style="color:var(--accent);font-size:15px">$1</strong>')
-.replace(/^# (.+)$/gm,'<strong style="color:var(--accent);font-size:16px">$1</strong>')
+.replace(/^### (.+)$/gm,'<h3>$1</h3>')
+.replace(/^## (.+)$/gm,'<h2>$1</h2>')
+.replace(/^# (.+)$/gm,'<h1>$1</h1>')
+.replace(/^> (.+)$/gm,'<blockquote>$1</blockquote>')
+.replace(/\|(.+)\|\n\|[-| :]+\|\n((?:\|.+\|\n?)*)/g,function(_,header,rows){
+var ths=header.split('|').filter(function(c){return c.trim();}).map(function(c){return '<th>'+c.trim()+'</th>';}).join('');
+var trs=rows.trim().split('\n').map(function(row){
+var tds=row.split('|').filter(function(c){return c.trim();}).map(function(c){return '<td>'+c.trim()+'</td>';}).join('');
+return '<tr>'+tds+'</tr>';
+}).join('');
+return '<table><thead><tr>'+ths+'</tr></thead><tbody>'+trs+'</tbody></table>';
+})
 .replace(/^[-*] (.+)$/gm,'<li>$1</li>')
 .replace(/^(\d+)\. (.+)$/gm,'<li>$2</li>')
 .replace(/(<li>[\s\S]*?<\/li>)/g,'<ul>$1</ul>')
-.replace(/\n\n/g,'</p><p>')
-.replace(/\n/g,'<br>')+'</p>';
-}
-
-function addAI(text){
-var m=document.getElementById('msgs');
-var w=document.createElement('div');w.className='awrap';
-var d=document.createElement('div');d.className='amsg';d.innerHTML=fmt(text);
-var acts=document.createElement('div');acts.className='aacts';
-var cb=document.createElement('button');cb.className='abtn';cb.textContent='Copy';
-cb.onclick=function(){navigator.clipboard.writeText(text).then(function(){toast('Copied!');});};
-acts.appendChild(cb);
-w.appendChild(d);w.appendChild(acts);m.appendChild(w);
-m.scrollTop=m.scrollHeight;
-setTimeout(function(){
-d.querySelectorAll('pre code').forEach(function(el){hljs.highlightElement(el);});
-doMath(d);
-},50);
+.replace(/\n\n+/g,'</p><p>')
+.replace(/\n/g,'<br>');
 }
 
 function addUser(text,img){
 var m=document.getElementById('msgs');
 var d=document.createElement('div');d.className='umsg';
 if(img){var i=document.createElement('img');i.src=img;i.className='iprv';d.appendChild(i);}
-d.appendChild(document.createTextNode(text));
+d.appendChild(document.createTextNode(text||''));
+m.appendChild(d);m.scrollTop=m.scrollHeight;
+}
+
+function addAI(text){
+var m=document.getElementById('msgs');
+var w=document.createElement('div');w.className='awrap';
+var d=document.createElement('div');d.className='amsg';
+d.innerHTML='<p>'+parseMarkdown(text)+'</p>';
+var acts=document.createElement('div');acts.className='aacts';
+var cb=document.createElement('button');cb.className='abtn';cb.textContent='Copy';
+cb.onclick=function(){navigator.clipboard.writeText(text).then(function(){toast('Copied!');});};
+acts.appendChild(cb);
+w.appendChild(d);w.appendChild(acts);
+m.appendChild(w);m.scrollTop=m.scrollHeight;
+setTimeout(function(){
+d.querySelectorAll('pre code').forEach(function(el){hljs.highlightElement(el);});
+doMath(d);
+},100);
+return d;
+}
+
+function addTyping(){
+var m=document.getElementById('msgs');
+var d=document.createElement('div');d.className='typing';d.id='tdot';
+d.innerHTML='<div class="td"></div><div class="td"></div><div class="td"></div>';
 m.appendChild(d);m.scrollTop=m.scrollHeight;
 }
 
 function onImg(inp){
 var f=inp.files[0];if(!f)return;
 var r=new FileReader();
-r.onload=function(e){imgData=e.target.result;toast('Image ready! မေးခွန်း ထည့်ပြီး send လုပ်ပါ');};
+r.onload=function(e){imgData=e.target.result;toast('Image ready! မေးပြီး send လုပ်ပါ');};
 r.readAsDataURL(f);inp.value='';
 }
 
 function saveSess(){
 if(hist.length===0)return;
 var k='s'+Date.now();
-sessions[k]={time:new Date().toLocaleString(),mode:mode,hist:hist.slice(),prev:hist[0].content.substring(0,20)};
+sessions[k]={t:new Date().toLocaleString(),m:mode,h:hist.slice(),p:hist[0].content.substring(0,20)};
 var ks=Object.keys(sessions);if(ks.length>8)delete sessions[ks[0]];
 localStorage.setItem('nxs',JSON.stringify(sessions));renderHBar();
 }
@@ -243,10 +325,11 @@ localStorage.setItem('nxs',JSON.stringify(sessions));renderHBar();
 function renderHBar(){
 var bar=document.getElementById('hbar');
 bar.querySelectorAll('.hbtn:not(#hcur)').forEach(function(b){b.remove();});
-var cb=bar.querySelector('.cbtn');
+var cb=bar.querySelector('.xbtn');
 Object.keys(sessions).reverse().slice(0,5).forEach(function(k){
 var s=sessions[k];
-var b=document.createElement('button');b.className='hbtn';b.textContent=s.prev||'Chat';b.title=s.time;
+var b=document.createElement('button');b.className='hbtn';
+b.textContent=s.p||'Chat';b.title=s.t;
 b.onclick=function(){loadSess(k,b);};
 bar.insertBefore(b,cb);
 });
@@ -254,10 +337,11 @@ bar.insertBefore(b,cb);
 
 function loadSess(k,btn){
 var s=sessions[k];if(!s)return;
-hist=s.hist.slice();
+hist=s.h.slice();
 document.getElementById('msgs').innerHTML='';
-hist.forEach(function(m){
-if(m.role==='user')addUser(m.content);else addAI(m.content);
+hist.forEach(function(msg){
+if(msg.role==='user')addUser(msg.content);
+else addAI(msg.content);
 });
 document.querySelectorAll('.hbtn').forEach(function(b){b.classList.remove('on');});
 if(btn)btn.classList.add('on');
@@ -265,7 +349,7 @@ if(btn)btn.classList.add('on');
 
 function newChat(){
 saveSess();hist=[];
-document.getElementById('msgs').innerHTML='<div class="awrap"><div class="amsg">New chat စတင်ပြီ မေးချင်တာ မေးပါ</div></div>';
+document.getElementById('msgs').innerHTML='<div class="awrap"><div class="amsg">New chat စတင်ပြီ &#128170; မေးချင်တာ မေးပါ</div></div>';
 document.querySelectorAll('.hbtn').forEach(function(b){b.classList.remove('on');});
 document.getElementById('hcur').classList.add('on');
 }
@@ -273,17 +357,17 @@ document.getElementById('hcur').classList.add('on');
 function clearAll(){
 if(!confirm('History အကုန် ဖျက်မလား?'))return;
 sessions={};localStorage.removeItem('nxs');hist=[];renderHBar();
-document.getElementById('msgs').innerHTML='<div class="awrap"><div class="amsg">Cleared မေးချင်တာ မေးပါ</div></div>';
+document.getElementById('msgs').innerHTML='<div class="awrap"><div class="amsg">Cleared &#128465; မေးချင်တာ မေးပါ</div></div>';
 toast('Cleared!');
 }
 
 function exportChat(){
-if(hist.length===0){toast('Chat မရှိဘူး');return;}
-var t='NEXUS AI Chat Export\n'+'='.repeat(40)+'\n\n';
-hist.forEach(function(m){t+=(m.role==='user'?'YOU: ':'AI: ')+m.content+'\n\n';});
+if(hist.length===0){toast('Chat မရှိဘူးသေးဘူး');return;}
+var t='NEXUS AI v5.0 - Chat Export\nDate: '+new Date().toLocaleString()+'\nMode: '+mode+'\n'+'='.repeat(50)+'\n\n';
+hist.forEach(function(m){t+=(m.role==='user'?'YOU:\n':'NEXUS AI:\n')+m.content+'\n\n'+'─'.repeat(30)+'\n\n';});
 var a=document.createElement('a');
-a.href=URL.createObjectURL(new Blob([t],{type:'text/plain'}));
-a.download='nexus-chat-'+Date.now()+'.txt';a.click();
+a.href=URL.createObjectURL(new Blob([t],{type:'text/plain;charset=utf-8'}));
+a.download='nexus-ai-'+Date.now()+'.txt';a.click();
 toast('Exported!');
 }
 
@@ -295,28 +379,90 @@ if(!txt&&!imgData)return;
 if(!KEY){document.getElementById('setup').style.display='flex';return;}
 busy=true;document.getElementById('sendBtn').disabled=true;
 box.value='';box.style.height='auto';
-addUser(txt||'[Image]',imgData);
-hist.push({role:'user',content:txt||'Describe this image'});
+
 var useImg=imgData;imgData=null;
-var td=document.createElement('div');td.className='typing';td.id='tdot';td.textContent='NEXUS AI တွေးနေသည်...';
-document.getElementById('msgs').appendChild(td);document.getElementById('msgs').scrollTop=99999;
+addUser(txt||'[Image]',useImg);
+hist.push({role:'user',content:txt||'Describe this image in detail'});
+
+addTyping();
+
 try{
 var msgs=[{role:'system',content:P[mode]}];
-var prevHist=hist.slice(0,-1);
-prevHist.forEach(function(m){msgs.push(m);});
-var lastContent=useImg?[{type:'image_url',image_url:{url:useImg}},{type:'text',text:txt||'Describe this image'}]:txt;
+hist.slice(0,-1).forEach(function(m){msgs.push({role:m.role,content:m.content});});
+
+var lastContent=useImg?
+[{type:'image_url',image_url:{url:useImg}},{type:'text',text:txt||'Describe this image'}]:
+txt;
 msgs.push({role:'user',content:lastContent});
-var model=useImg?'llama-3.2-11b-vision-preview':'llama-3.3-70b-versatile';
+
+var modelName=useImg?'llama-3.2-11b-vision-preview':'llama-3.3-70b-versatile';
+
+// Streaming
 var r=await fetch('https://api.groq.com/openai/v1/chat/completions',{
 method:'POST',
 headers:{'Content-Type':'application/json','Authorization':'Bearer '+KEY},
-body:JSON.stringify({model:model,messages:msgs,max_tokens:2048,temperature:0.7})
+body:JSON.stringify({model:modelName,messages:msgs,max_tokens:2048,temperature:0.7,stream:!useImg})
 });
-var d=await r.json();
+
 document.getElementById('tdot')?.remove();
-if(d.error){hist.pop();addAI('Error: '+d.error.message);}
+
+if(useImg){
+// No streaming for vision
+var d=await r.json();
+if(d.error){hist.pop();addAI('&#10060; Error: '+d.error.message);}
 else{var rep=d.choices[0].message.content;hist.push({role:'assistant',content:rep});addAI(rep);saveSess();}
-}catch(e){document.getElementById('tdot')?.remove();hist.pop();addAI('Error: '+e.message);}
+} else {
+// Streaming mode
+var m=document.getElementById('msgs');
+var w=document.createElement('div');w.className='awrap';
+var dv=document.createElement('div');dv.className='amsg';dv.innerHTML='<span id="sc"></span><span class="cursor"></span>';
+var acts=document.createElement('div');acts.className='aacts';
+w.appendChild(dv);w.appendChild(acts);m.appendChild(w);
+
+var fullText='';
+var sc=document.getElementById('sc');
+var reader=r.body.getReader();
+var decoder=new TextDecoder();
+
+while(true){
+var result=await reader.read();
+if(result.done)break;
+var chunk=decoder.decode(result.value);
+var lines=chunk.split('\n');
+for(var i=0;i<lines.length;i++){
+var line=lines[i].trim();
+if(line.startsWith('data: ')&&line!=='data: [DONE]'){
+try{
+var json=JSON.parse(line.substring(6));
+var delta=json.choices[0].delta.content||'';
+fullText+=delta;
+sc.innerHTML=parseMarkdown(fullText);
+m.scrollTop=m.scrollHeight;
+}catch(e){}
+}
+}
+}
+
+// Remove cursor, add copy button
+dv.querySelector('.cursor')?.remove();
+var cb=document.createElement('button');cb.className='abtn';cb.textContent='Copy';
+var ft=fullText;
+cb.onclick=function(){navigator.clipboard.writeText(ft).then(function(){toast('Copied!');});};
+acts.appendChild(cb);
+
+setTimeout(function(){
+dv.querySelectorAll('pre code').forEach(function(el){hljs.highlightElement(el);});
+doMath(dv);
+},100);
+
+if(fullText){hist.push({role:'assistant',content:fullText});saveSess();}
+}
+
+}catch(e){
+document.getElementById('tdot')?.remove();
+hist.pop();
+addAI('&#10060; Error: '+e.message);
+}
 busy=false;document.getElementById('sendBtn').disabled=false;box.focus();
 }
 
@@ -326,9 +472,13 @@ if(isRec){recog.stop();return;}
 var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 recog=new SR();recog.lang='my-MM';recog.continuous=false;recog.interimResults=false;
 recog.onstart=function(){isRec=true;document.getElementById('micBtn').classList.add('rec');document.getElementById('micBtn').textContent='Stop';};
-recog.onresult=function(e){document.getElementById('box').value=e.results[0][0].transcript;rs(document.getElementById('box'));};
-recog.onend=recog.onerror=function(){isRec=false;document.getElementById('micBtn').classList.remove('rec');document.getElementById('micBtn').textContent='Mic';};
+recog.onresult=function(e){var t=e.results[0][0].transcript;document.getElementById('box').value=t;rs(document.getElementById('box'));};
+recog.onend=recog.onerror=function(){isRec=false;document.getElementById('micBtn').classList.remove('rec');document.getElementById('micBtn').innerHTML='&#127908;';};
 recog.start();
+}
+
+if('serviceWorker' in navigator){
+navigator.serviceWorker.register('sw.js').catch(function(){});
 }
 </script>
 </body></html>
